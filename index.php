@@ -51,6 +51,15 @@ function format($time) {
 		}
 		$time['минуты'] %= 60;
 	}
+	if (isset($time['минуты'])) {
+		if (isset($time['часы'])) {
+			$time['часы'] += round($time['минуты'] / 60.0, 2);
+		}
+		else {
+			$time['часы'] = round($time['минуты'] / 60.0, 2);
+		}
+		unset($time['минуты']);
+	}
 	return $time;
 }
 $ch = curl_init();
@@ -139,14 +148,9 @@ if (isset($_GET['name'])) {
 		}
 	}
 	echo "<br><span class='name-label'>Общее время:</span>";
-	$minutes = $sum / 60;
-	$hours = floor($minutes / 60);
-	$minutes %= 60;
+	$hours = round($sum / 3600.0, 2);
 	if ($hours != 0) {
 		echo "<br> часов: " . $hours;
-	}
-	if ($minutes != 0) {
-		echo "<br> минут: " . $minutes;
 	}
 	if ($sum == 0) {
 		echo "<br> 0 ";
